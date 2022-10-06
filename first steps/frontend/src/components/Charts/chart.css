@@ -1,0 +1,25 @@
+.d3-tooltip {
+  position: absolute;
+  padding: 0 10px;
+  background: white;
+  opacity: 0;
+}
+
+.d3-label {
+  position: absolute;
+  padding: 0 10px;
+  background: white;
+  opacity: 100;
+}
+
+.frame {
+  padding: 5px 5px;
+  background-color: lightgray;
+  /* fill: lightgray;
+  fill-opacity: 1; */
+  stroke-opacity: 1;
+}
+
+.frame>p {
+  margin-bottom: 0;
+}

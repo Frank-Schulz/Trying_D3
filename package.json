@@ -1,0 +1,19 @@
+{
+  "name": "trying_d3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Frank-Schulz/Trying_D3.git"
+  },
+  "author": "Frank Schulz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Frank-Schulz/Trying_D3/issues"
+  },
+  "homepage": "https://github.com/Frank-Schulz/Trying_D3#readme"
+}
