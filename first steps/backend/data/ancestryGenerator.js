@@ -88,9 +88,6 @@ function ancestryGenerator(peopleCount = 50) {
       newPerson.DOD = new Date(futureDate);
     }
 
-    // log age, DOB, DOD, vital status
-    console.log(newPerson.ageDetails().age);
-
     // add new relation to ancestry
     _ancestry.data.set(newPerson.id, newPerson);
   }
