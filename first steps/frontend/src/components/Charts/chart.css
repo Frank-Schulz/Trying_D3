@@ -23,3 +23,8 @@
 .frame>p {
   margin-bottom: 0;
 }
+
+.hasChildren{
+  fill: #555;
+  stroke-width: 10;
+}

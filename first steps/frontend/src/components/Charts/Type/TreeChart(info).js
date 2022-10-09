@@ -130,6 +130,12 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
           return `${PersonBox(person)}`
         });
 
+      nodeEnter.append('circle')
+        .attr('class', 'hasChildren')
+        .attr('cx', 0)
+        .attr('cy', 0)
+        .attr('r', 4);
+
       // Transition nodes to their new position.
       const nodeUpdate = node.merge(nodeEnter)
         .transition(transition)
@@ -145,6 +151,12 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
         .attr('y', -(personBox.height / 2))
         .attr('width', personBox.width)
         .attr('height', personBox.height);
+
+      nodeUpdate.select('circle.hasChildren')
+        .attr('cx', (personBox.width / 2))
+        .attr('cy', 0)
+        .attr("fill-opacity", d => d._children ? 1 : 0)
+        .attr("stroke-opacity", d => d._children ? 1 : 0);
 
       // Transition exiting nodes to the parent's new position.
       const nodeExit = node.exit()
