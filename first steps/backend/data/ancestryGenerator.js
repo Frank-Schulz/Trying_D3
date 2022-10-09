@@ -71,10 +71,7 @@ function ancestryGenerator(peopleCount = 50) {
     // 1 = child of refPerson
     let relation = Math.floor(Math.random() * newRelation.length);
 
-    const refPerson = _ancestry.getRandomPerson(relation);
-    if (refPerson.parents.length > 2 || refPerson.children.length > 2) {
-      // TODO: back logic back in
-    }
+    const refPerson = _ancestry.getRandomPerson();
 
     //TODO: set back to        [ relation ]
     let newPerson = newRelation[ 1 ](refPerson);
