@@ -12,7 +12,11 @@ export function PersonBox(person) {
       new Date().getTime() - new Date(DOB).getTime();
 
     const ageDate = new Date(ageDifMs);
-    return { years: ageDate.getUTCFullYear() - 1970, months: ageDate.getUTCMonth() };
+    return {
+      years: ageDate.getUTCFullYear() - 1970,
+      months: ageDate.getUTCMonth(),
+      days: ageDate.getUTCDay()
+    };
   }
 
 
@@ -38,7 +42,8 @@ export function PersonBox(person) {
   const ageComponent = () => {
     const unborn = ageDetails.age.years <= -1 ? 'Unborn' : null;
     const months = ageDetails.age.years == 0 ? ageDetails.age.months + ' months old' : null;
-    return (<td style={{ color: isDead() }}>{unborn || months || ageDetails.age.years || 'No data'}</td>)
+    const days = ageDetails.age.years == 0 && ageDetails.age.months == 0 ? ageDetails.age.days + ' days old' : null;
+    return (<td style={{ color: isDead() }}>{unborn || days || months || ageDetails.age.years || 'No data'}</td>)
   }
 
   return (
