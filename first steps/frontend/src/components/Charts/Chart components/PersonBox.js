@@ -12,7 +12,11 @@ export function PersonBox(person) {
       new Date().getTime() - new Date(DOB).getTime();
 
     const ageDate = new Date(ageDifMs);
-    return { years: ageDate.getUTCFullYear() - 1970, months: ageDate.getUTCMonth() };
+    return {
+      years: ageDate.getUTCFullYear() - 1970,
+      months: ageDate.getUTCMonth(),
+      days: ageDate.getUTCDay()
+    };
   }
 
 
@@ -26,19 +30,15 @@ export function PersonBox(person) {
     age: age,
     DOB: humanDate(DOB),
     DOD: humanDate(DOD),
-    vitalStatus: DOD ? `Deceased` :
-      `${age.years <= -1 ? 'Unborn' : 'Alive'}`
-  }
-
-  const isDead = () => {
-    if (ageDetails.vitalStatus == 'Unborn') return null;
-    return ageDetails.DOD ? 'red' : 'green';
+    vitalStatus: DOD ? { state: `Deceased`, color: 'red' } :
+      age.years <= -1 ? { state: 'Unborn', color: null } : { state: 'Alive', color: 'green' },
   }
 
   const ageComponent = () => {
     const unborn = ageDetails.age.years <= -1 ? 'Unborn' : null;
     const months = ageDetails.age.years == 0 ? ageDetails.age.months + ' months old' : null;
-    return (<td style={{ color: isDead() }}>{unborn || months || ageDetails.age.years || 'No data'}</td>)
+    const days = ageDetails.age.years == 0 && ageDetails.age.months == 0 ? ageDetails.age.days + ' days old' : null;
+    return (<td style={{ color: ageDetails.vitalStatus.color }}>{unborn || days || months || ageDetails.age.years || 'No data'}</td>)
   }
 
   return (
