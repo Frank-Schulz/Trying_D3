@@ -2,67 +2,68 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server';
 
 export function PersonBox(person) {
-  const DOB = person.DOB
-  const DOD = person.DOD
+  const DOB = person.DOB;
+  const DOD = person.DOD;
+  const age = calcAge();
 
-
-  const calcAge = () => {
+  function calcAge() {
     const ageDifMs = DOD ?
       new Date(DOD).getTime() - new Date(DOB).getTime() :
       new Date().getTime() - new Date(DOB).getTime();
 
     const ageDate = new Date(ageDifMs);
-    return ageDate.getUTCFullYear() - 1970;
+    return { years: ageDate.getUTCFullYear() - 1970, months: ageDate.getUTCMonth() };
   }
 
+
   const humanDate = (date) => {
-    return new Date(date).toJSON().slice(0, 10);
+    if (!date) return date;
+    let dateComponent = new Date(date).toJSON().slice(0, 10);
+    return dateComponent.replace(/-/g, "/");
   }
 
   const ageDetails = {
-    age: calcAge(),
+    age: age,
     DOB: humanDate(DOB),
     DOD: humanDate(DOD),
-    vitalStatus: DOD ?
-      `Deceased` :
-      `${calcAge() <= 0 ?
-        'Unborn' :
-        'Alive'}`
+    vitalStatus: DOD ? `Deceased` :
+      `${age.years <= -1 ? 'Unborn' : 'Alive'}`
   }
 
-  const color = () => {
-    return person.DOD ?
-      'red' : 'green';
+  const isDead = () => {
+    if (ageDetails.vitalStatus == 'Unborn') return null;
+    return ageDetails.DOD ? 'red' : 'green';
+  }
+
+  const ageComponent = () => {
+    const unborn = ageDetails.age.years <= -1 ? 'Unborn' : null;
+    const months = ageDetails.age.years == 0 ? ageDetails.age.months + ' months old' : null;
+    return (<td style={{ color: isDead() }}>{unborn || months || ageDetails.age.years || 'No data'}</td>)
   }
 
   return (
     ReactDOMServer.renderToStaticMarkup(
       <>
-        {console.log(person)}
-        <h6 style={{ textAlign: 'center' }}>{person.fullName}</h6>
+        <h6 style={{ height: '15px', margin: 0, textAlign: 'center' }}>{person.fullName}</h6>
+        {ageDetails.DOB && <p style={{ textAlign: 'center', margin: 0 }}>
+          {ageDetails.DOB && new Date(ageDetails.DOB).getUTCFullYear() || <>&emsp;&emsp;</>}
+          -
+          {ageDetails.DOD && new Date(ageDetails.DOD).getUTCFullYear() || <>&emsp;&emsp;</>}
+        </p>}
         <table>
-          {/* <th style={{ textAlign: 'center' }}>{person.fullName}</th> */}
           <tr>
             <td>Age:&emsp;</td>
-            {ageDetails.vitalStatus === 'Deceased' && <td style={{ color: color() }} >Lived till {ageDetails.age}</td>}
-            {ageDetails.vitalStatus != 'Deceased' && <td style={{ color: color() }}>{ageDetails.age} years old</td>}
+            {ageComponent()}
           </tr>
-          {ageDetails.age >= 14 && <tr>
+          {person.gender && ageDetails.age.years >= 14 && <tr>
             <td>G:</td>
             <td>{person.gender}</td>
-          </tr>}
-          <tr>
-            <td>DOB:</td>
-            <td>{ageDetails.DOB}</td>
-            {/* {ageDetails.age > 0 && <td>{ageDetails.DOB}</td>} */}
-            {ageDetails.age < 0 && <td>{ageDetails.vitalStatus}</td>}
-          </tr>
-          {person.DOD && <tr>
-            <td>DOD:</td>
-            <td>{ageDetails.DOD}</td>
           </tr>}
         </table>
       </>
     )
   )
 }
+/**
+            {ageDetails.vitalStatus === 'Deceased' && <td style={{ color: isDead() }} >Lived till {ageDetails.age}</td>}
+            {ageDetails.vitalStatus != 'Deceased' && <td style={{ color: isDead() }}>{ageDetails.age} years old</td>}*/

@@ -13,8 +13,8 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
   const height = useRecoilValue(heightAtom);
 
   const personBox = {
-    width: 140,
-    height: 90,
+    width: 150,
+    height: 62,
     margin: {
       x: 40,
       y: 10,
@@ -130,6 +130,13 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
           return `${PersonBox(person)}`
         });
 
+      // Add 'has children' indicator circles
+      nodeEnter.append('circle')
+        .attr('class', 'hasChildren')
+        .attr('cx', 0)
+        .attr('cy', 0)
+        .attr('r', 4);
+
       // Transition nodes to their new position.
       const nodeUpdate = node.merge(nodeEnter)
         .transition(transition)
@@ -137,14 +144,21 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
         // .attr("fill-opacity", 1)
         .attr("stroke-opacity", 1);
 
-      // nodeUpdate.select('rect.frame')
+      // Update the frames
       nodeUpdate.select('foreignObject.frame')
-        // .attr('fill-opacity', 1)
+        .attr('fill-opacity', 1)
         .attr('stroke-opacity', 1)
         .attr('x', -(personBox.width / 2))
         .attr('y', -(personBox.height / 2))
         .attr('width', personBox.width)
         .attr('height', personBox.height);
+
+      // Update the 'has children' indicator circles
+      nodeUpdate.select('circle.hasChildren')
+        .attr('cx', (personBox.width / 2))
+        .attr('cy', 0)
+        .attr("fill-opacity", d => d._children ? 1 : 0)
+        .attr("stroke-opacity", d => d._children ? 1 : 0);
 
       // Transition exiting nodes to the parent's new position.
       const nodeExit = node.exit()
@@ -161,6 +175,7 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
       // Enter any new links at the parent's previous position.
       const linkEnter = link.enter()
         .append("path")
+        .attr('class', 'links')
         .attr("d", d => {
           const o = { x: source.x0, y: source.y0 };
           return transitionElbow({ source: o, target: o });

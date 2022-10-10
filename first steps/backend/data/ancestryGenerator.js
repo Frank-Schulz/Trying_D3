@@ -71,10 +71,7 @@ function ancestryGenerator(peopleCount = 50) {
     // 1 = child of refPerson
     let relation = Math.floor(Math.random() * newRelation.length);
 
-    const refPerson = _ancestry.getRandomPerson(relation);
-    if (refPerson.parents.length > 2 || refPerson.children.length > 2) {
-      // TODO: back logic back in
-    }
+    const refPerson = _ancestry.getRandomPerson();
 
     //TODO: set back to        [ relation ]
     let newPerson = newRelation[ 1 ](refPerson);
@@ -87,9 +84,6 @@ function ancestryGenerator(peopleCount = 50) {
       futureDate = new Date().setFullYear(newPerson.DOB.getFullYear() + 70 + Math.floor(Math.random() * 30))
       newPerson.DOD = new Date(futureDate);
     }
-
-    // log age, DOB, DOD, vital status
-    console.log(newPerson.ageDetails().age);
 
     // add new relation to ancestry
     _ancestry.data.set(newPerson.id, newPerson);
