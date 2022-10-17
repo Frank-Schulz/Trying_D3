@@ -15,8 +15,8 @@ export function TreeChart({ treeRoot, xDomain, yDomain }) {
   const height = useRecoilValue(heightAtom);
 
   const nodeSize = {
-    width: 150,
-    height: 62,
+    width: 180,
+    height: 72,
     margin: {
       x: 40,
       y: 10,
