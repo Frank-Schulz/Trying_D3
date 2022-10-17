@@ -15,6 +15,7 @@ function ancestryGenerator(peopleCount = 50) {
     futureDate = new Date().setFullYear(initialPerson.DOB.getFullYear() + 70 + Math.floor(Math.random() * 30))
     initialPerson.DOD = new Date(futureDate);
   }
+  initialPerson.root = true;
   _ancestry.data.set(initialPerson.id, initialPerson);
 
   // array containing two functions to make a new relation of the

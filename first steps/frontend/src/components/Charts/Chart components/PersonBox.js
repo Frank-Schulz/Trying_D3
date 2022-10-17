@@ -1,12 +1,14 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server';
 
-export function PersonBox(person) {
-  const DOB = person.DOB;
-  const DOD = person.DOD;
-  const age = calcAge();
+// Returns human readable date format
+const humanDate = (date) => {
+  if (!date) return date;
+  let dateComponent = new Date(date).toJSON().slice(0, 10);
+  return dateComponent.replace(/-/g, "/");
+}
 
-  function calcAge() {
+function calcAge(DOB, DOD) {
     const ageDifMs = DOD ?
       new Date(DOD).getTime() - new Date(DOB).getTime() :
       new Date().getTime() - new Date(DOB).getTime();
@@ -19,12 +21,10 @@ export function PersonBox(person) {
     };
   }
 
-
-  const humanDate = (date) => {
-    if (!date) return date;
-    let dateComponent = new Date(date).toJSON().slice(0, 10);
-    return dateComponent.replace(/-/g, "/");
-  }
+export function PersonBox(person) {
+  const DOB = person.DOB;
+  const DOD = person.DOD;
+  const age = calcAge(DOB, DOD);
 
   const ageDetails = {
     age: age,
@@ -34,14 +34,16 @@ export function PersonBox(person) {
       age.years <= -1 ? { state: 'Unborn', color: null } : { state: 'Alive', color: 'green' },
   }
 
+  // Return the appropriate age display
   const ageComponent = () => {
     const unborn = ageDetails.age.years <= -1 ? 'Unborn' : null;
     const months = ageDetails.age.years == 0 ? ageDetails.age.months + ' months old' : null;
     const days = ageDetails.age.years == 0 && ageDetails.age.months == 0 ? ageDetails.age.days + ' days old' : null;
-    return (<td style={{ color: ageDetails.vitalStatus.color }}>{unborn || days || months || ageDetails.age.years || 'No data'}</td>)
+    return unborn || days || months || ageDetails.age.years || 'No data'
   }
 
   return (
+    // Return static markup for use in D3
     ReactDOMServer.renderToStaticMarkup(
       <>
         <h6 style={{ height: '15px', margin: 0, textAlign: 'center' }}>{person.fullName}</h6>
@@ -53,7 +55,7 @@ export function PersonBox(person) {
         <table>
           <tr>
             <td>Age:&emsp;</td>
-            {ageComponent()}
+            {ageComponent && <td style={{ color: ageDetails.vitalStatus.color }}>{ageComponent()}</td>}
           </tr>
           {person.gender && ageDetails.age.years >= 14 && <tr>
             <td>G:</td>
@@ -64,6 +66,3 @@ export function PersonBox(person) {
     )
   )
 }
-/**
-            {ageDetails.vitalStatus === 'Deceased' && <td style={{ color: isDead() }} >Lived till {ageDetails.age}</td>}
-            {ageDetails.vitalStatus != 'Deceased' && <td style={{ color: isDead() }}>{ageDetails.age} years old</td>}*/
