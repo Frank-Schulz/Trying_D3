@@ -6,7 +6,7 @@ import { YAxis } from './YAxis';
 import { LineChart } from './Type/LineChart';
 import { BarChart } from './Type/BarChart';
 import { TreeChart as StaticTree } from './Type/TreeChart(static)';
-import { TreeChart } from './Type/TreeChart(info)';
+import { TreeChart } from './Type/TreeChart(dynamic)';
 import { Legend } from './Legend';
 import * as d3 from 'd3';
 
@@ -33,7 +33,7 @@ export const Chart = ({ width, height, margin, data }) => {
     // zoom and translation !do not separate (doesn't work for some reason)
     svg.call(
       d3.zoom()
-        .scaleExtent([ 0.5, 2 ])
+        .scaleExtent([ 0.25, 2 ])
         .on("zoom", ({ transform }) => {
           chartGroup.attr("transform", transform);
         }));
