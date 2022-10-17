@@ -4,6 +4,9 @@ import { useRecoilValue } from 'recoil';
 import { heightAtom, marginAtom, widthAtom } from '../chartStates';
 import { tooltip } from '../Chart components/chartInfo';
 
+/* -------------------------------------------------------------------------- */
+/*                     Second iteration of the tree chart                     */
+/* -------------------------------------------------------------------------- */
 
 export function TreeChart({ treeRoot, xDomain, yDomain }) {
   const width = useRecoilValue(widthAtom);
