@@ -7,19 +7,14 @@ import { Chart } from '../../components/Charts/index';
 import Test1 from '../../components/test/Test1';
 import Test3 from '../../components/test/Test3';
 import Reference from '../../components/Charts/Type/reference';
-
+import { D3Utility } from './../../components/Charts/dynamicTreeTest/D3Utility';
 
 function LandingPage() {
   const [ ancestry, setAncestry ] = useState(null);
   const [ loading, setLoading ] = useState(null);
   const [ treeRoot, SetTreeRoot ] = useState(null);
 
-  const config = {
-    headers: {
-      "Content-type": "application/json",
-    },
-  };
-
+  //REVIEW: Leave as optional load all?
   const getAncestry = async () => {
     setLoading(true);
     const { data } = await axios.get(`/index`);
@@ -27,14 +22,10 @@ function LandingPage() {
     setLoading(false);
   }
 
-  // const invertCoords = (x, y) => {
-  //   return `${x *= -1},${y *= -1}`
-  // }
-
   async function stratifyData() {
     setLoading(true);
 
-    const { data } = await axios.get(`/index`);
+    const { data } = await axios.get(`/index/root`);
 
     var stratify = d3.stratify()
       .parentId((d) => {
@@ -46,10 +37,7 @@ function LandingPage() {
 
     root.sum((d) => {
       return +d.size;
-    })
-      .sort((a, b) => {
-        return b.height - a.height || b.value - a.value;
-      });
+    });
 
     SetTreeRoot(root);
     setLoading(false);
@@ -67,8 +55,6 @@ function LandingPage() {
       {loading && <Loading />}
 
       {!loading && <div>
-        {/* {!ancestry && <button onClick={getAncestry}> Get Ancestry </button>}
-        {!treeRoot && ancestry && <button onClick={stratifyData}> Stratify Data </button>} */}
         {treeRoot && <Chart
           width={600}
           height={600}
