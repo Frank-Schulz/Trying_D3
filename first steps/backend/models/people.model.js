@@ -6,6 +6,10 @@ const peopleSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    root: {
+      type: Boolean,
+      default: false,
+    },
     path: {
       type: String,
       required: true
