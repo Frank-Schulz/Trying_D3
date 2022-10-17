@@ -1,13 +1,9 @@
-import './LandingPage.css';
-import React, { useState, useEffect } from 'react'
-import * as d3 from "d3";
 import axios from 'axios';
-import Loading from '../../components/Loading';
+import * as d3 from "d3";
+import React, { useEffect, useState } from 'react';
 import { Chart } from '../../components/Charts/index';
-import Test1 from '../../components/test/Test1';
-import Test3 from '../../components/test/Test3';
-import Reference from '../../components/Charts/Type/reference';
-import { D3Utility } from './../../components/Charts/dynamicTreeTest/D3Utility';
+import Loading from '../../components/Loading';
+import './LandingPage.css';
 
 function LandingPage() {
   const [ ancestry, setAncestry ] = useState(null);
